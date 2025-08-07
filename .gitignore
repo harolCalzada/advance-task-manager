@@ -1,0 +1,39 @@
+
+# FVM Version Cache
+.fvm/
+
+# Flutter
+.flutter_tool/
+.dart_tool/
+.packages
+
+# Build artifacts
+/build/
+/ios/.symlinks/
+/android/local.properties
+/android/.gradle/
+/android/gradlew
+/android/gradlew.bat
+/android/build/
+/android/app/build/
+/android/app/intermediates/
+/ios/Flutter/Generated.xcconfig
+/ios/Pods/
+/ios/Flutter/flutter_export_environment.sh
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# Firebase configuration (if used)
+# google-services.json
+# GoogleService-Info.plist
+
+# Mac
+.DS_Store
+.fvm/
+.fvm_cache/
+
+# Windows
+Thumbs.db
