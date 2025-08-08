@@ -126,3 +126,18 @@ Project structure under `lib/`:
   - `pages/`: UI screens (Flutter widgets).
   - `widgets/`: Reusable UI components.
   - `state/`: Riverpod notifiers/providers for UI state management.
+
+## Tests
+
+This project includes a small but representative test suite:
+
+- **Unit (business logic)**: e.g. `test/domain/usecases/toggle_task_completed_usecase_test.dart`.
+- **Widget (UI)**: e.g. `test/presentation/pages/task_list_page_test.dart`.
+
+Run all tests:
+
+```bash
+fvm flutter test
+```
+
+Without FVM, replace `fvm flutter` with `flutter`.
