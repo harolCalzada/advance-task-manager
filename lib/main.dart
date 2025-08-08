@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:advance_task_manager/presentation/pages/task_list_page.dart';
+import 'package:advance_task_manager/core/theme/app_theme.dart';
 
 void main() {
-  runApp(const AdvancedTaskManagerApp());
+  runApp(const ProviderScope(child: AdvancedTaskManagerApp()));
 }
 
 class AdvancedTaskManagerApp extends StatelessWidget {
@@ -13,9 +15,7 @@ class AdvancedTaskManagerApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Advanced Task Manager',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-      ),
+      theme: AppTheme.light,
       home: const TaskListPage(),
     );
   }
