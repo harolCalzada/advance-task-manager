@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:advance_task_manager/presentation/state/task_list_notifier.dart';
+import 'package:advance_task_manager/presentation/state/tasks/task_list_notifier.dart';
 
 class FilterChips extends StatelessWidget {
   const FilterChips({super.key, required this.selected, required this.onSelected});

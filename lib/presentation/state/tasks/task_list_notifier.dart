@@ -1,5 +1,9 @@
-import 'package:advance_task_manager/domain/entities/task.dart';
-import 'package:advance_task_manager/domain/usecases/get_tasks_usecase.dart';
+import 'package:advance_task_manager/domain/entities/tasks/task.dart';
+import 'package:advance_task_manager/domain/usecases/tasks/get_tasks_usecase.dart';
+import 'package:advance_task_manager/domain/usecases/tasks/create_task_usecase.dart';
+import 'package:advance_task_manager/domain/usecases/tasks/update_task_usecase.dart';
+import 'package:advance_task_manager/domain/usecases/tasks/toggle_task_completed_usecase.dart';
+import 'package:advance_task_manager/domain/usecases/tasks/delete_task_usecase.dart';
 import 'package:advance_task_manager/core/di/di.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -24,6 +28,26 @@ final getTasksUseCaseProvider = FutureProvider<GetTasksUseCase>((ref) async {
   return GetTasksUseCase(repo);
 });
 
+final createTaskUseCaseProvider = FutureProvider<CreateTaskUseCase>((ref) async {
+  final repo = await ref.watch(taskRepositoryProvider.future);
+  return CreateTaskUseCase(repo);
+});
+
+final updateTaskUseCaseProvider = FutureProvider<UpdateTaskUseCase>((ref) async {
+  final repo = await ref.watch(taskRepositoryProvider.future);
+  return UpdateTaskUseCase(repo);
+});
+
+final toggleTaskCompletedUseCaseProvider = FutureProvider<ToggleTaskCompletedUseCase>((ref) async {
+  final repo = await ref.watch(taskRepositoryProvider.future);
+  return ToggleTaskCompletedUseCase(repo);
+});
+
+final deleteTaskUseCaseProvider = FutureProvider<DeleteTaskUseCase>((ref) async {
+  final repo = await ref.watch(taskRepositoryProvider.future);
+  return DeleteTaskUseCase(repo);
+});
+
 final taskListNotifierProvider = StateNotifierProvider<TaskListNotifier, TaskListState>((ref) {
   return TaskListNotifier(ref);
 });
@@ -46,8 +70,8 @@ class TaskListNotifier extends StateNotifier<TaskListState> {
 
   Future<void> updateTask(Task task) async {
     try {
-      final repo = await _ref.read(taskRepositoryProvider.future);
-      final updated = await repo.update(task);
+      final usecase = await _ref.read(updateTaskUseCaseProvider.future);
+      final updated = await usecase(task);
       state = state.maybeWhen(
         data: (tasks, filter) {
           final next = tasks.map((t) => t.id == updated.id ? updated : t).toList(growable: false);
@@ -62,8 +86,8 @@ class TaskListNotifier extends StateNotifier<TaskListState> {
 
   Future<void> deleteTask(String id) async {
     try {
-      final repo = await _ref.read(taskRepositoryProvider.future);
-      await repo.delete(id);
+      final usecase = await _ref.read(deleteTaskUseCaseProvider.future);
+      await usecase(id);
       state = state.maybeWhen(
         data: (tasks, filter) {
           final next = tasks.where((t) => t.id != id).toList(growable: false);
@@ -75,10 +99,11 @@ class TaskListNotifier extends StateNotifier<TaskListState> {
       state = TaskListState.error(e.toString());
     }
   }
+
   Future<void> addTask(String title) async {
     try {
-      final repo = await _ref.read(taskRepositoryProvider.future);
-      final added = await repo.addTask(title);
+      final usecase = await _ref.read(createTaskUseCaseProvider.future);
+      final added = await usecase(title);
       state = state.maybeWhen(
         data: (tasks, filter) => TaskListState.data(tasks: [added, ...tasks], filter: filter),
         orElse: () => state,
@@ -90,8 +115,8 @@ class TaskListNotifier extends StateNotifier<TaskListState> {
 
   Future<void> toggleCompleted(String id) async {
     try {
-      final repo = await _ref.read(taskRepositoryProvider.future);
-      final updated = await repo.toggleCompleted(id);
+      final usecase = await _ref.read(toggleTaskCompletedUseCaseProvider.future);
+      final updated = await usecase(id);
       state = state.maybeWhen(
         data: (tasks, filter) {
           final next = tasks.map((t) => t.id == id ? updated : t).toList(growable: false);

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:advance_task_manager/domain/entities/task.dart';
+import 'package:advance_task_manager/domain/entities/tasks/task.dart';
 import 'package:http/http.dart' as http;
 
 abstract class TaskRemoteDataSource {
@@ -21,8 +21,7 @@ class TaskRemoteDataSourceImpl implements TaskRemoteDataSource {
       throw Exception('Failed to fetch tasks: ${res.statusCode}');
     }
     final data = json.decode(res.body) as List<dynamic>;
-    // Map jsonplaceholder fields: {id, title, completed}
-    // Generate createdAt now since API doesn't include it.
+
     final now = DateTime.now();
     return data.take(20).map((e) {
       final map = e as Map<String, dynamic>;

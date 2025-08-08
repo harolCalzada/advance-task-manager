@@ -1,5 +1,5 @@
-import 'package:advance_task_manager/domain/entities/task.dart';
-import 'package:advance_task_manager/presentation/state/task_list_notifier.dart';
+import 'package:advance_task_manager/domain/entities/tasks/task.dart';
+import 'package:advance_task_manager/presentation/state/tasks/task_list_notifier.dart';
 import 'package:flutter/material.dart';
 
 Future<void> showTaskDetailSheet(BuildContext context, Task task, TaskListNotifier notifier) async {

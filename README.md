@@ -1,16 +1,16 @@
 # Advanced Task Manager
 
-A foundational Flutter project scaffold implementing Clean Architecture concepts with Riverpod for state management, and set up for REST and GraphQL integrations.
+This project is a technical challenge for a job application as a Flutter Developer.
 
 ## Description
 
-Advanced Task Manager is a sample application intended to demonstrate a clean separation of concerns using Clean Architecture:
+Advanced Task Manager is a small sample app meant to show a clear separation of concerns using Clean Architecture. It's intentionally simple but practical:
 
-- Domain layer with entities, repositories (abstractions), use cases, and failures.
-- Infrastructure layer with data sources and repository implementations.
-- Presentation layer with pages, widgets, and Riverpod notifiers.
+- Domain layer: entities, repository abstractions, use cases, and failures.
+- Infrastructure layer: data sources and repository implementations (local/remote).
+- Presentation layer: pages, widgets, and Riverpod notifiers.
 
-Key technologies:
+Key tech:
 
 - Flutter
 - Riverpod
@@ -33,7 +33,7 @@ cd advance-task-manager
 fvm flutter pub get
 ```
 
-If you are not using FVM, run:
+If you're not using FVM, run:
 
 ```bash
 flutter pub get
@@ -86,7 +86,7 @@ fvm flutter pub outdated
 
 ### Without FVM
 
-Reemplaza `fvm flutter` por `flutter` si no usas FVM.
+If you don't use FVM, just replace `fvm flutter` with `flutter` in the commands above.
 
 ```bash
 flutter pub get
@@ -98,9 +98,9 @@ flutter run
 
 ## Troubleshooting
 
-* __SDK mismatch (json_serializable / freezed)__
-  - Si ves advertencias de versión de SDK, asegúrate de que `environment.sdk` en `pubspec.yaml` sea compatible con tu Dart local. Este proyecto está configurado para `">=3.4.0 <4.0.0"`.
-  - Tras cambiar el SDK o versiones de dependencias, ejecuta: `fvm flutter clean && fvm flutter pub get` y luego vuelve a generar código.
+- **SDK mismatch (json_serializable / freezed)**
+  - If you see SDK version warnings, make sure `environment.sdk` in `pubspec.yaml` matches your local Dart. This project targets `">=3.4.0 <4.0.0"`.
+  - After changing SDK or dependency versions, it's a good idea to run: `fvm flutter clean && fvm flutter pub get` and then regenerate code.
 
 ## Architecture
 
@@ -108,23 +108,21 @@ Project structure under `lib/`:
 
 - `core/`
 
-  - `di/`: Dependency injection setup (providers and service locators).
+  - `di/`: Dependency injection setup (providers and a small service locator).
 
 - `domain/`
 
-  - `entities/`: Core business models (pure Dart, framework-agnostic).
-  - `repositories/`: Abstract contracts to be implemented by infrastructure.
-  - `usecases/`: Application-specific business rules (interactors).
-  - `failures/`: Error models used by the domain layer.
+  - `entities/`: Core business models (plain Dart, framework-agnostic).
+  - `repositories/`: Abstract contracts implemented by infrastructure.
+  - `usecases/`: App-specific business rules (aka interactors).
+  - `failures/`: Error models used across the domain layer.
 
 - `infrastructure/`
 
-  - `datasources/`: Local/remote data providers (e.g., Sqflite, HTTP, GraphQL).
-  - `repositories/`: Concrete implementations of domain repositories.
+  - `datasources/`: Local/remote data providers (e.g. Sqflite, HTTP, GraphQL).
+  - `repositories/`: Concrete implementations of the domain repositories.
 
 - `presentation/`
   - `pages/`: UI screens (Flutter widgets).
   - `widgets/`: Reusable UI components.
   - `state/`: Riverpod notifiers/providers for UI state management.
-
-This skeleton is intentionally minimal so you can evolve it following Clean Architecture principles.

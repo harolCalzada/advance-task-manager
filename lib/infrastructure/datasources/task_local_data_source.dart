@@ -1,4 +1,4 @@
-import 'package:advance_task_manager/domain/entities/task.dart';
+import 'package:advance_task_manager/domain/entities/tasks/task.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'database_helper.dart';
@@ -97,8 +97,6 @@ class TaskLocalDataSourceImpl implements TaskLocalDataSource {
         id: row['id'] as String,
         title: row['title'] as String,
         isCompleted: (row['is_completed'] as int) == 1,
-        createdAt: row['created_at'] == null
-            ? null
-            : DateTime.fromMillisecondsSinceEpoch(row['created_at'] as int),
+        createdAt: row['created_at'] == null ? null : DateTime.fromMillisecondsSinceEpoch(row['created_at'] as int),
       );
 }

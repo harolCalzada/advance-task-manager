@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:advance_task_manager/presentation/state/task_list_notifier.dart';
+import 'package:advance_task_manager/presentation/state/tasks/task_list_notifier.dart';
 import 'package:advance_task_manager/presentation/pages/task_create_page.dart';
 import 'package:advance_task_manager/presentation/widgets/error_view.dart';
 import 'package:advance_task_manager/presentation/widgets/filter_chips.dart';
@@ -20,8 +20,6 @@ class _TaskListPageState extends ConsumerState<TaskListPage> {
     // Load initial tasks
     Future.microtask(() => ref.read(taskListNotifierProvider.notifier).loadInitial());
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
