@@ -7,6 +7,7 @@ abstract class TaskLocalDataSource {
   Future<List<Task>> getAll();
   Future<Task> insert(Task task);
   Future<Task> toggleCompleted(String id);
+  Future<Task> update(Task task);
   Future<void> delete(String id);
   Future<int> count();
 }
@@ -68,6 +69,21 @@ class TaskLocalDataSourceImpl implements TaskLocalDataSource {
       whereArgs: [id],
     );
     return updated;
+  }
+
+  @override
+  Future<Task> update(Task task) async {
+    await _db.raw.update(
+      DatabaseHelper.tableTasks,
+      {
+        'title': task.title,
+        'is_completed': task.isCompleted ? 1 : 0,
+        'created_at': task.createdAt?.millisecondsSinceEpoch,
+      },
+      where: 'id = ?',
+      whereArgs: [task.id],
+    );
+    return task;
   }
 
   Map<String, Object?> _toRow(Task t) => {

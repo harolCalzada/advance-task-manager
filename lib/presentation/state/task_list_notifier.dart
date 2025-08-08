@@ -44,6 +44,37 @@ class TaskListNotifier extends StateNotifier<TaskListState> {
     }
   }
 
+  Future<void> updateTask(Task task) async {
+    try {
+      final repo = await _ref.read(taskRepositoryProvider.future);
+      final updated = await repo.update(task);
+      state = state.maybeWhen(
+        data: (tasks, filter) {
+          final next = tasks.map((t) => t.id == updated.id ? updated : t).toList(growable: false);
+          return TaskListState.data(tasks: next, filter: filter);
+        },
+        orElse: () => state,
+      );
+    } catch (e) {
+      state = TaskListState.error(e.toString());
+    }
+  }
+
+  Future<void> deleteTask(String id) async {
+    try {
+      final repo = await _ref.read(taskRepositoryProvider.future);
+      await repo.delete(id);
+      state = state.maybeWhen(
+        data: (tasks, filter) {
+          final next = tasks.where((t) => t.id != id).toList(growable: false);
+          return TaskListState.data(tasks: next, filter: filter);
+        },
+        orElse: () => state,
+      );
+    } catch (e) {
+      state = TaskListState.error(e.toString());
+    }
+  }
   Future<void> addTask(String title) async {
     try {
       final repo = await _ref.read(taskRepositoryProvider.future);

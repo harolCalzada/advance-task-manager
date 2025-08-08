@@ -40,4 +40,14 @@ class TaskRepositoryImpl implements TaskRepository {
     );
     return _local.insert(t);
   }
+
+  @override
+  Future<Task> update(Task task) {
+    return _local.update(task);
+  }
+
+  @override
+  Future<void> delete(String id) {
+    return _local.delete(id);
+  }
 }

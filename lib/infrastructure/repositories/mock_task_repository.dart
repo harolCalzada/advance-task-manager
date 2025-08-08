@@ -35,4 +35,15 @@ class MockTaskRepository implements TaskRepository {
     _tasks = _tasks.map((t) => t.id == id ? t.copyWith(isCompleted: !t.isCompleted) : t).toList(growable: false);
     return _tasks.firstWhere((t) => t.id == id);
   }
+
+  @override
+  Future<Task> update(Task task) async {
+    _tasks = _tasks.map((t) => t.id == task.id ? task : t).toList(growable: false);
+    return task;
+  }
+
+  @override
+  Future<void> delete(String id) async {
+    _tasks = _tasks.where((t) => t.id != id).toList(growable: false);
+  }
 }
