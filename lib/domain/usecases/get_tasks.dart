@@ -1,0 +1,3 @@
+class GetTasks {
+  const GetTasks();
+}
