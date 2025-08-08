@@ -18,6 +18,18 @@ Key tech:
 - HTTP and GraphQL
 - Sqflite & Path Provider
 
+## App Features
+
+- Task Management
+
+![alt text](image.png)
+![alt text](image-1.png)
+![alt text](image-2.png)
+
+- Country List
+  ![alt text](image-3.png)
+  ![alt text](image-4.png)
+
 ## Getting Started
 
 1. Clone the repository
