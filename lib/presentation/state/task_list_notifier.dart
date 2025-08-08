@@ -1,7 +1,6 @@
 import 'package:advance_task_manager/domain/entities/task.dart';
 import 'package:advance_task_manager/domain/usecases/get_tasks_usecase.dart';
-import 'package:advance_task_manager/infrastructure/repositories/mock_task_repository.dart';
-import 'package:advance_task_manager/domain/repositories/task_repository.dart';
+import 'package:advance_task_manager/core/di/di.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -9,67 +8,91 @@ part 'task_list_notifier.freezed.dart';
 
 enum TaskFilter { all, pending, completed }
 
+// UI state union: loading, data, error
 @freezed
-abstract class TaskListState with _$TaskListState {
-  const factory TaskListState({
+sealed class TaskListState with _$TaskListState {
+  const factory TaskListState.loading() = _Loading;
+  const factory TaskListState.data({
     @Default(<Task>[]) List<Task> tasks,
     @Default(TaskFilter.all) TaskFilter filter,
-    @Default(false) bool isLoading,
-  }) = _TaskListState;
+  }) = _Data;
+  const factory TaskListState.error(String message) = _Error;
 }
 
-final getTasksUseCaseProvider = Provider<GetTasksUseCase>((ref) {
-  final repo = ref.watch(taskRepositoryProvider);
+final getTasksUseCaseProvider = FutureProvider<GetTasksUseCase>((ref) async {
+  final repo = await ref.watch(taskRepositoryProvider.future);
   return GetTasksUseCase(repo);
 });
 
-final taskListNotifierProvider =
-    StateNotifierProvider<TaskListNotifier, TaskListState>((ref) {
-  final getTasks = ref.watch(getTasksUseCaseProvider);
-  final repo = ref.watch(taskRepositoryProvider);
-  return TaskListNotifier(getTasks: getTasks, repositoryAccess: repo);
+final taskListNotifierProvider = StateNotifierProvider<TaskListNotifier, TaskListState>((ref) {
+  return TaskListNotifier(ref);
 });
 
 class TaskListNotifier extends StateNotifier<TaskListState> {
-  TaskListNotifier({required GetTasksUseCase getTasks, required TaskRepository repositoryAccess})
-      : _getTasks = getTasks,
-        _repository = repositoryAccess,
-        super(const TaskListState());
+  TaskListNotifier(this._ref) : super(const TaskListState.loading());
 
-  final GetTasksUseCase _getTasks;
-  final TaskRepository _repository;
+  final Ref _ref;
 
   Future<void> loadInitial() async {
-    state = state.copyWith(isLoading: true);
-    final items = await _getTasks();
-    state = state.copyWith(tasks: items, isLoading: false);
+    state = const TaskListState.loading();
+    try {
+      final getTasks = await _ref.read(getTasksUseCaseProvider.future);
+      final items = await getTasks();
+      state = TaskListState.data(tasks: items);
+    } catch (e) {
+      state = TaskListState.error(e.toString());
+    }
   }
 
   Future<void> addTask(String title) async {
-    final added = await _repository.addTask(title);
-    state = state.copyWith(tasks: [...state.tasks, added]);
+    try {
+      final repo = await _ref.read(taskRepositoryProvider.future);
+      final added = await repo.addTask(title);
+      state = state.maybeWhen(
+        data: (tasks, filter) => TaskListState.data(tasks: [added, ...tasks], filter: filter),
+        orElse: () => state,
+      );
+    } catch (e) {
+      state = TaskListState.error(e.toString());
+    }
   }
 
   Future<void> toggleCompleted(String id) async {
-    final updated = await _repository.toggleCompleted(id);
-    final next = state.tasks
-        .map((t) => t.id == id ? updated : t)
-        .toList(growable: false);
-    state = state.copyWith(tasks: next);
+    try {
+      final repo = await _ref.read(taskRepositoryProvider.future);
+      final updated = await repo.toggleCompleted(id);
+      state = state.maybeWhen(
+        data: (tasks, filter) {
+          final next = tasks.map((t) => t.id == id ? updated : t).toList(growable: false);
+          return TaskListState.data(tasks: next, filter: filter);
+        },
+        orElse: () => state,
+      );
+    } catch (e) {
+      state = TaskListState.error(e.toString());
+    }
   }
 
   void setFilter(TaskFilter filter) {
-    state = state.copyWith(filter: filter);
+    state = state.maybeWhen(
+      data: (tasks, _) => TaskListState.data(tasks: tasks, filter: filter),
+      orElse: () => state,
+    );
   }
 
   List<Task> get filteredTasks {
-    switch (state.filter) {
-      case TaskFilter.all:
-        return state.tasks;
-      case TaskFilter.pending:
-        return state.tasks.where((t) => !t.isCompleted).toList(growable: false);
-      case TaskFilter.completed:
-        return state.tasks.where((t) => t.isCompleted).toList(growable: false);
-    }
+    return state.maybeWhen(
+      data: (tasks, filter) {
+        switch (filter) {
+          case TaskFilter.all:
+            return tasks;
+          case TaskFilter.pending:
+            return tasks.where((t) => !t.isCompleted).toList(growable: false);
+          case TaskFilter.completed:
+            return tasks.where((t) => t.isCompleted).toList(growable: false);
+        }
+      },
+      orElse: () => const <Task>[],
+    );
   }
 }

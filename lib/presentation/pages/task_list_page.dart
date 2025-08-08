@@ -10,6 +10,36 @@ class TaskListPage extends ConsumerStatefulWidget {
   ConsumerState<TaskListPage> createState() => _TaskListPageState();
 }
 
+class _ErrorView extends StatelessWidget {
+  const _ErrorView({required this.message, required this.onRetry});
+
+  final String message;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Something went wrong', style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: 8),
+            Text(message, textAlign: TextAlign.center),
+            const SizedBox(height: 16),
+            FilledButton.icon(
+              onPressed: onRetry,
+              icon: const Icon(Icons.refresh),
+              label: const Text('Retry'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _TaskListPageState extends ConsumerState<TaskListPage> {
   @override
   void initState() {
@@ -30,27 +60,36 @@ class _TaskListPageState extends ConsumerState<TaskListPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (state.isLoading)
-            const LinearProgressIndicator(minHeight: 2),
+          state.maybeWhen(
+            loading: () => const LinearProgressIndicator(minHeight: 2),
+            orElse: () => const SizedBox.shrink(),
+          ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
-            child: _FilterChips(
-              selected: state.filter,
-              onSelected: notifier.setFilter,
+            child: state.maybeWhen(
+              data: (tasks, filter) => _FilterChips(
+                selected: filter,
+                onSelected: notifier.setFilter,
+              ),
+              orElse: () => const SizedBox.shrink(),
             ),
           ),
           const Divider(height: 1),
           Expanded(
-            child: ListView.builder(
-              itemCount: notifier.filteredTasks.length,
-              itemBuilder: (context, index) {
-                final task = notifier.filteredTasks[index];
-                return CheckboxListTile(
-                  title: Text(task.title),
-                  value: task.isCompleted,
-                  onChanged: (_) => notifier.toggleCompleted(task.id),
-                );
-              },
+            child: state.when(
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (message) => _ErrorView(message: message, onRetry: notifier.loadInitial),
+              data: (tasks, filter) => ListView.builder(
+                itemCount: notifier.filteredTasks.length,
+                itemBuilder: (context, index) {
+                  final task = notifier.filteredTasks[index];
+                  return CheckboxListTile(
+                    title: Text(task.title),
+                    value: task.isCompleted,
+                    onChanged: (_) => notifier.toggleCompleted(task.id),
+                  );
+                },
+              ),
             ),
           ),
         ],

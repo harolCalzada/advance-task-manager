@@ -11,273 +11,378 @@ part of 'task_list_notifier.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
+
 /// @nodoc
 mixin _$TaskListState {
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is TaskListState);
+  }
 
- List<Task> get tasks; TaskFilter get filter; bool get isLoading;
-/// Create a copy of TaskListState
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$TaskListStateCopyWith<TaskListState> get copyWith => _$TaskListStateCopyWithImpl<TaskListState>(this as TaskListState, _$identity);
+  @override
+  int get hashCode => runtimeType.hashCode;
 
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TaskListState&&const DeepCollectionEquality().equals(other.tasks, tasks)&&(identical(other.filter, filter) || other.filter == filter)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(tasks),filter,isLoading);
-
-@override
-String toString() {
-  return 'TaskListState(tasks: $tasks, filter: $filter, isLoading: $isLoading)';
-}
-
-
+  @override
+  String toString() {
+    return 'TaskListState()';
+  }
 }
 
 /// @nodoc
-abstract mixin class $TaskListStateCopyWith<$Res>  {
-  factory $TaskListStateCopyWith(TaskListState value, $Res Function(TaskListState) _then) = _$TaskListStateCopyWithImpl;
-@useResult
-$Res call({
- List<Task> tasks, TaskFilter filter, bool isLoading
-});
-
-
-
-
+class $TaskListStateCopyWith<$Res> {
+  $TaskListStateCopyWith(TaskListState _, $Res Function(TaskListState) __);
 }
-/// @nodoc
-class _$TaskListStateCopyWithImpl<$Res>
-    implements $TaskListStateCopyWith<$Res> {
-  _$TaskListStateCopyWithImpl(this._self, this._then);
-
-  final TaskListState _self;
-  final $Res Function(TaskListState) _then;
-
-/// Create a copy of TaskListState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? tasks = null,Object? filter = null,Object? isLoading = null,}) {
-  return _then(_self.copyWith(
-tasks: null == tasks ? _self.tasks : tasks // ignore: cast_nullable_to_non_nullable
-as List<Task>,filter: null == filter ? _self.filter : filter // ignore: cast_nullable_to_non_nullable
-as TaskFilter,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
-as bool,
-  ));
-}
-
-}
-
 
 /// Adds pattern-matching-related methods to [TaskListState].
 extension TaskListStatePatterns on TaskListState {
-/// A variant of `map` that fallback to returning `orElse`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _TaskListState value)?  $default,{required TResult orElse(),}){
-final _that = this;
-switch (_that) {
-case _TaskListState() when $default != null:
-return $default(_that);case _:
-  return orElse();
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Data value)? data,
+    TResult Function(_Error value)? error,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Loading() when loading != null:
+        return loading(_that);
+      case _Data() when data != null:
+        return data(_that);
+      case _Error() when error != null:
+        return error(_that);
+      case _:
+        return orElse();
+    }
+  }
 
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// Callbacks receives the raw object, upcasted.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case final Subclass2 value:
-///     return ...;
-/// }
-/// ```
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _TaskListState value)  $default,){
-final _that = this;
-switch (_that) {
-case _TaskListState():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Data value) data,
+    required TResult Function(_Error value) error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Loading():
+        return loading(_that);
+      case _Data():
+        return data(_that);
+      case _Error():
+        return error(_that);
+    }
+  }
 
-}
-}
-/// A variant of `map` that fallback to returning `null`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _TaskListState value)?  $default,){
-final _that = this;
-switch (_that) {
-case _TaskListState() when $default != null:
-return $default(_that);case _:
-  return null;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Data value)? data,
+    TResult? Function(_Error value)? error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Loading() when loading != null:
+        return loading(_that);
+      case _Data() when data != null:
+        return data(_that);
+      case _Error() when error != null:
+        return error(_that);
+      case _:
+        return null;
+    }
+  }
 
-}
-}
-/// A variant of `when` that fallback to an `orElse` callback.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<Task> tasks,  TaskFilter filter,  bool isLoading)?  $default,{required TResult orElse(),}) {final _that = this;
-switch (_that) {
-case _TaskListState() when $default != null:
-return $default(_that.tasks,_that.filter,_that.isLoading);case _:
-  return orElse();
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loading,
+    TResult Function(List<Task> tasks, TaskFilter filter)? data,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Loading() when loading != null:
+        return loading();
+      case _Data() when data != null:
+        return data(_that.tasks, _that.filter);
+      case _Error() when error != null:
+        return error(_that.message);
+      case _:
+        return orElse();
+    }
+  }
 
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// As opposed to `map`, this offers destructuring.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case Subclass2(:final field2):
-///     return ...;
-/// }
-/// ```
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<Task> tasks,  TaskFilter filter,  bool isLoading)  $default,) {final _that = this;
-switch (_that) {
-case _TaskListState():
-return $default(_that.tasks,_that.filter,_that.isLoading);case _:
-  throw StateError('Unexpected subclass');
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loading,
+    required TResult Function(List<Task> tasks, TaskFilter filter) data,
+    required TResult Function(String message) error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Loading():
+        return loading();
+      case _Data():
+        return data(_that.tasks, _that.filter);
+      case _Error():
+        return error(_that.message);
+    }
+  }
 
-}
-}
-/// A variant of `when` that fallback to returning `null`
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<Task> tasks,  TaskFilter filter,  bool isLoading)?  $default,) {final _that = this;
-switch (_that) {
-case _TaskListState() when $default != null:
-return $default(_that.tasks,_that.filter,_that.isLoading);case _:
-  return null;
-
-}
-}
-
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loading,
+    TResult? Function(List<Task> tasks, TaskFilter filter)? data,
+    TResult? Function(String message)? error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _Loading() when loading != null:
+        return loading();
+      case _Data() when data != null:
+        return data(_that.tasks, _that.filter);
+      case _Error() when error != null:
+        return error(_that.message);
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
 
+class _Loading implements TaskListState {
+  const _Loading();
 
-class _TaskListState implements TaskListState {
-  const _TaskListState({final  List<Task> tasks = const <Task>[], this.filter = TaskFilter.all, this.isLoading = false}): _tasks = tasks;
-  
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _Loading);
+  }
 
- final  List<Task> _tasks;
-@override@JsonKey() List<Task> get tasks {
-  if (_tasks is EqualUnmodifiableListView) return _tasks;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_tasks);
-}
+  @override
+  int get hashCode => runtimeType.hashCode;
 
-@override@JsonKey() final  TaskFilter filter;
-@override@JsonKey() final  bool isLoading;
-
-/// Create a copy of TaskListState
-/// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$TaskListStateCopyWith<_TaskListState> get copyWith => __$TaskListStateCopyWithImpl<_TaskListState>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TaskListState&&const DeepCollectionEquality().equals(other._tasks, _tasks)&&(identical(other.filter, filter) || other.filter == filter)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_tasks),filter,isLoading);
-
-@override
-String toString() {
-  return 'TaskListState(tasks: $tasks, filter: $filter, isLoading: $isLoading)';
-}
-
-
+  @override
+  String toString() {
+    return 'TaskListState.loading()';
+  }
 }
 
 /// @nodoc
-abstract mixin class _$TaskListStateCopyWith<$Res> implements $TaskListStateCopyWith<$Res> {
-  factory _$TaskListStateCopyWith(_TaskListState value, $Res Function(_TaskListState) _then) = __$TaskListStateCopyWithImpl;
-@override @useResult
-$Res call({
- List<Task> tasks, TaskFilter filter, bool isLoading
-});
 
+class _Data implements TaskListState {
+  const _Data(
+      {final List<Task> tasks = const <Task>[], this.filter = TaskFilter.all})
+      : _tasks = tasks;
 
+  final List<Task> _tasks;
+  @JsonKey()
+  List<Task> get tasks {
+    if (_tasks is EqualUnmodifiableListView) return _tasks;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_tasks);
+  }
 
+  @JsonKey()
+  final TaskFilter filter;
 
+  /// Create a copy of TaskListState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$DataCopyWith<_Data> get copyWith =>
+      __$DataCopyWithImpl<_Data>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _Data &&
+            const DeepCollectionEquality().equals(other._tasks, _tasks) &&
+            (identical(other.filter, filter) || other.filter == filter));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_tasks), filter);
+
+  @override
+  String toString() {
+    return 'TaskListState.data(tasks: $tasks, filter: $filter)';
+  }
 }
+
 /// @nodoc
-class __$TaskListStateCopyWithImpl<$Res>
-    implements _$TaskListStateCopyWith<$Res> {
-  __$TaskListStateCopyWithImpl(this._self, this._then);
-
-  final _TaskListState _self;
-  final $Res Function(_TaskListState) _then;
-
-/// Create a copy of TaskListState
-/// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? tasks = null,Object? filter = null,Object? isLoading = null,}) {
-  return _then(_TaskListState(
-tasks: null == tasks ? _self._tasks : tasks // ignore: cast_nullable_to_non_nullable
-as List<Task>,filter: null == filter ? _self.filter : filter // ignore: cast_nullable_to_non_nullable
-as TaskFilter,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
-as bool,
-  ));
+abstract mixin class _$DataCopyWith<$Res>
+    implements $TaskListStateCopyWith<$Res> {
+  factory _$DataCopyWith(_Data value, $Res Function(_Data) _then) =
+      __$DataCopyWithImpl;
+  @useResult
+  $Res call({List<Task> tasks, TaskFilter filter});
 }
 
+/// @nodoc
+class __$DataCopyWithImpl<$Res> implements _$DataCopyWith<$Res> {
+  __$DataCopyWithImpl(this._self, this._then);
 
+  final _Data _self;
+  final $Res Function(_Data) _then;
+
+  /// Create a copy of TaskListState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? tasks = null,
+    Object? filter = null,
+  }) {
+    return _then(_Data(
+      tasks: null == tasks
+          ? _self._tasks
+          : tasks // ignore: cast_nullable_to_non_nullable
+              as List<Task>,
+      filter: null == filter
+          ? _self.filter
+          : filter // ignore: cast_nullable_to_non_nullable
+              as TaskFilter,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _Error implements TaskListState {
+  const _Error(this.message);
+
+  final String message;
+
+  /// Create a copy of TaskListState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ErrorCopyWith<_Error> get copyWith =>
+      __$ErrorCopyWithImpl<_Error>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _Error &&
+            (identical(other.message, message) || other.message == message));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message);
+
+  @override
+  String toString() {
+    return 'TaskListState.error(message: $message)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$ErrorCopyWith<$Res>
+    implements $TaskListStateCopyWith<$Res> {
+  factory _$ErrorCopyWith(_Error value, $Res Function(_Error) _then) =
+      __$ErrorCopyWithImpl;
+  @useResult
+  $Res call({String message});
+}
+
+/// @nodoc
+class __$ErrorCopyWithImpl<$Res> implements _$ErrorCopyWith<$Res> {
+  __$ErrorCopyWithImpl(this._self, this._then);
+
+  final _Error _self;
+  final $Res Function(_Error) _then;
+
+  /// Create a copy of TaskListState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? message = null,
+  }) {
+    return _then(_Error(
+      null == message
+          ? _self.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
 // dart format on

@@ -51,6 +51,57 @@ fvm flutter run
 fvm flutter test
 ```
 
+5. Code generation (Freezed/JSON)
+
+```bash
+# One-off build
+fvm flutter pub run build_runner build --delete-conflicting-outputs
+
+# Watch mode
+fvm flutter pub run build_runner watch --delete-conflicting-outputs
+```
+
+6. Analyze and format
+
+```bash
+# Static analysis
+fvm flutter analyze
+
+# Format (dry-run)
+fvm flutter format . --set-exit-if-changed
+
+# Format (apply changes)
+fvm flutter format .
+```
+
+7. Useful maintenance
+
+```bash
+# Clean build artifacts
+fvm flutter clean && fvm flutter pub get
+
+# Check dependency status
+fvm flutter pub outdated
+```
+
+### Without FVM
+
+Reemplaza `fvm flutter` por `flutter` si no usas FVM.
+
+```bash
+flutter pub get
+flutter pub run build_runner build --delete-conflicting-outputs
+flutter analyze
+flutter test
+flutter run
+```
+
+## Troubleshooting
+
+* __SDK mismatch (json_serializable / freezed)__
+  - Si ves advertencias de versión de SDK, asegúrate de que `environment.sdk` en `pubspec.yaml` sea compatible con tu Dart local. Este proyecto está configurado para `">=3.4.0 <4.0.0"`.
+  - Tras cambiar el SDK o versiones de dependencias, ejecuta: `fvm flutter clean && fvm flutter pub get` y luego vuelve a generar código.
+
 ## Architecture
 
 Project structure under `lib/`:

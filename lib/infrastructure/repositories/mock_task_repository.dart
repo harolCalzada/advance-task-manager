@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:advance_task_manager/domain/entities/task.dart';
 import 'package:advance_task_manager/domain/repositories/task_repository.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// In-memory mock implementation of TaskRepository
 class MockTaskRepository implements TaskRepository {
@@ -33,14 +32,7 @@ class MockTaskRepository implements TaskRepository {
 
   @override
   Future<Task> toggleCompleted(String id) async {
-    _tasks = _tasks
-        .map((t) => t.id == id ? t.copyWith(isCompleted: !t.isCompleted) : t)
-        .toList(growable: false);
+    _tasks = _tasks.map((t) => t.id == id ? t.copyWith(isCompleted: !t.isCompleted) : t).toList(growable: false);
     return _tasks.firstWhere((t) => t.id == id);
   }
 }
-
-/// Riverpod provider for the repository
-final taskRepositoryProvider = Provider<TaskRepository>((ref) {
-  return MockTaskRepository();
-});
